@@ -392,7 +392,11 @@ def draw_bg(top_offset=0, bh_offset=0, all_offset=0, special=None, box=True):
         pg.draw.rect(win, box_c[3], pg.Rect(74+xoff, 102-all_offset, 598, 286-bh_offset))
         pg.draw.rect(win, box_c[4], pg.Rect(78+xoff, 106-all_offset, 590, 278-bh_offset))
     if special == "al":
-        win.blit(al_g, (0, 91))
+        if "oldal" in old:
+            win.blit(al_g, (0, 91-all_offset))
+        else:
+            pg.draw.rect(win, bg_c[1], pg.Rect(0, 91-all_offset, screenw, 48+3))
+            pg.draw.rect(win, bg_c[2], pg.Rect(0, 91+48+3-all_offset, screenw, 48+3))
     
     pg.draw.rect(win, ldl_c, pg.Rect(0, 400-all_offset-bh_offset, screenw, 80+all_offset+bh_offset))
     pg.draw.rect(win, (33, 26, 20), pg.Rect(0, 400-all_offset-bh_offset, screenw, 2))
@@ -1890,7 +1894,7 @@ while working:
             draw_bg(all_offset=ao, bh_offset=ao//2, special=(slide if slide in spec else None), box=(slide != "xf"))
             if slide == "xf":
                 for i in range(3+widescreen):
-                    win.blit(xfbg, (46+230*i+13*widescreen, 101))
+                    win.blit(xfbg, (46+230*i+13*widescreen, 101-round(ao*1.5)))
     profiling_end("ops")
     if not ldlmode:
         win.blit(logo, (txoff//3, ldl_y))
@@ -2106,6 +2110,10 @@ while working:
             win.blit(radarHeader, (screenw//2 - radarHeader.get_width()//2, 0))
             win.blit(logorad, (screenw//2 - radarHeader.get_width()//2, 0))
         elif slide == "al":
+            def supper(text):
+                if "uppercaseAMPM" in old:
+                    return text.upper()
+                return text
             drawshadow(startitlefont, "Almanac", 181+txoff//3, 39+ldl_y, 3, color=yeller, mono=18, ofw=1.07, bs=True, upper=veryuppercase)
             if aldata["sun"]:
                 drawshadow(starfont32, "Sunrise:", 76+txoff, 114+ldl_y, 3, mono=gmono, char_offsets={})
@@ -2121,11 +2129,11 @@ while working:
                 sunrise2 = dt.datetime.fromtimestamp(aldata["sun"]["sunrise2"])
                 sunset2 = dt.datetime.fromtimestamp(aldata["sun"]["sunset2"])
                 
-                drawshadow(starfont32, splubby_the_return(sunrise1.strftime("%I:%M %p")), 305+txoff, 114+ldl_y, 3, mono=gmono, char_offsets={})
-                drawshadow(starfont32, splubby_the_return(sunset1.strftime("%I:%M %p")), 305+txoff, 144+ldl_y, 3, mono=gmono, char_offsets={})
+                drawshadow(starfont32, supper(splubby_the_return(sunrise1.strftime("%I:%M %p"))), 305+txoff, 114+ldl_y, 3, mono=gmono, char_offsets={})
+                drawshadow(starfont32, supper(splubby_the_return(sunset1.strftime("%I:%M %p"))), 305+txoff, 144+ldl_y, 3, mono=gmono, char_offsets={})
                 
-                drawshadow(starfont32, splubby_the_return(sunrise2.strftime("%I:%M %p")), 518+txoff, 114+ldl_y, 3, mono=gmono, char_offsets={})
-                drawshadow(starfont32, splubby_the_return(sunset2.strftime("%I:%M %p")), 518+txoff, 144+ldl_y, 3, mono=gmono, char_offsets={})
+                drawshadow(starfont32, supper(splubby_the_return(sunrise2.strftime("%I:%M %p"))), 518+txoff, 114+ldl_y, 3, mono=gmono, char_offsets={})
+                drawshadow(starfont32, supper(splubby_the_return(sunset2.strftime("%I:%M %p"))), 518+txoff, 144+ldl_y, 3, mono=gmono, char_offsets={})
             if aldata["moon"]:
                 drawshadow(starfont32, "Moon Data:", 76+txoff, 191+ldl_y, 3, mono=gmono, char_offsets={}, color=yeller)
                 for i in range(4):
@@ -2138,7 +2146,7 @@ while working:
                     dat = padtext(moondt[1], 6)
                     mn = pg.transform.smoothscale_by({"New": moon_new, "First": moon_fq, "Full": moon_full, "Last": moon_lq}[mt], (1.2, 1))
 
-                    win.blit(mn, (80+xx+txoff, 265))
+                    win.blit(mn, (80+xx+txoff, 265+ldl_y))
                     
                     drawshadow(starfont32, dat, 76+xx+txoff, 354+ldl_y, 3, mono=gmono, char_offsets={})
         elif slide == "xf":
@@ -2157,28 +2165,29 @@ while working:
                 
                 return text
             to = 13*widescreen
+            yo = -round(ao*1.5)
             for i in range(3+widescreen):
-                drawshadow(starfont32, "Lo", 118+i*230-18*2+to, 314, 3, mono=gmono, color=(120, 120, 222))
-                drawshadow(starfont32, "Hi", 118+i*230+18*3+to, 314, 3, mono=gmono, color=yeller)
+                drawshadow(starfont32, "Lo", 118+i*230-18*2+to, 314+yo, 3, mono=gmono, color=(120, 120, 222))
+                drawshadow(starfont32, "Hi", 118+i*230+18*3+to, 314+yo, 3, mono=gmono, color=yeller)
             if wxdata:
                 for i in range(3+widescreen):
                     d = dt.date.today() + dt.timedelta(days=(i+2+subpage*3))
-                    drawshadow(starfont32, d.strftime("%a").upper(), 118+i*230+to, 106, 3, color=yeller, mono=gmono)
+                    drawshadow(starfont32, d.strftime("%a").upper(), 118+i*230+to, 106+yo, 3, color=yeller, mono=gmono)
                     ix = i*2+4+subpage*6-(wxdata["extended"]["daypart"][0]["dayOrNight"] == "N")
                     fctx = sane(wxdata["extended"]["daypart"][ix]["phraseLong"])
                     fctx = wraptext(fctx, 10)
                     fctx = [f.strip().rstrip() for f in fctx]
                     for j, l in enumerate(fctx):
-                        drawshadow(starfont32, l, 118+i*230+27-len(l)*9+to, 245+j*36, 3, mono=gmono)
+                        drawshadow(starfont32, l, 118+i*230+27-len(l)*9+to, 245+j*36+yo, 3, mono=gmono)
                     lo = str(wxdata["extended"]["daypart"][ix+1]["temperature"])
-                    drawshadow(largefont32, lo, 114+i*230-18*2+24-len(lo)*12+to, 344, 3, mono=25)
+                    drawshadow(largefont32, lo, 114+i*230-18*2+24-len(lo)*12+to, 344+yo, 3, mono=25)
                     
                     hi = str(wxdata["extended"]["daypart"][ix]["temperature"])
-                    drawshadow(largefont32, hi, 114+i*230+18*3+24-len(hi)*12+to, 344, 3, mono=25)
+                    drawshadow(largefont32, hi, 114+i*230+18*3+24-len(hi)*12+to, 344+yo, 3, mono=25)
                     if xficons[i+subpage*3]:
                         xi = xficons[i+subpage*3][int(iconidx3%len(xficons[i+subpage*3]))][0]
                         xi = pg.transform.smoothscale_by(xi, (1.2, 1))
-                        win.blit(xi, (120+i*230+27-xi.get_width()/2+to, 200-xi.get_height()/2))
+                        win.blit(xi, (120+i*230+27-xi.get_width()/2+to, 200-xi.get_height()/2+yo))
             else:
                 drawshadow(starfont32, "Temporarily Unavailable", 177, 218, 3, mono=gmono)
         elif slide == "ol":

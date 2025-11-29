@@ -126,7 +126,18 @@ class Launcher(wx.Frame):
             self.textpos.SetSelection(0)
         else:
             self.textpos.SetSelection(existing_conf.get("textpos", 0))
-        self.flags = wx.CheckListBox(pa2, choices=["More Uppercase Text", "Time Draw Delay", "LDL Draw Delay", "Show Pressure Trend", "Unlimited Ceiling Colon", "Extra CC Space", "Old Titles", "Alert Crawl Palette Bug"])
+        self.flags = wx.CheckListBox(pa2, choices=[
+            "More Uppercase Text",
+            "Time Draw Delay",
+            "LDL Draw Delay",
+            "Show Pressure Trend",
+            "Unlimited Ceiling Colon",
+            "Extra CC Space",
+            "Old Titles",
+            "Alert Crawl Palette Bug",
+            "Older Almanac Banner",
+            "Uppercase Almanac AM/PM"
+        ])
         
         pa2s.Add(self.flags, 1, wx.ALL | wx.EXPAND)
         
@@ -149,6 +160,10 @@ class Launcher(wx.Frame):
                 set_flags.append(6)
             if "warnpalbug" in flg:
                 set_flags.append(7)
+            if "oldal" in flg:
+                set_flags.append(8)
+            if "uppercaseAMPM" in flg:
+                set_flags.append(9)
             self.flags.SetCheckedItems(set_flags)
         
         top = wx.Panel(panel)
@@ -677,6 +692,8 @@ class Launcher(wx.Frame):
             if 5 in flg: misc.add("ccspace")
             if 6 in flg: misc.add("oldtitles")
             if 6 in flg: misc.add("warnpalbug")
+            if 7 in flg: misc.add("oldal")
+            if 8 in flg: misc.add("uppercaseAMPM")
 
             items.append(("mainloc", str(mainloc.GetValue())))
             items.append(("mainloc2", str(mainloc2.GetValue())))
