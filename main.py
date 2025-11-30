@@ -734,10 +734,8 @@ def getdata():
                     if ix == 3:
                         break
             rs = float(rs)
-            print(ts, rs)
             dev1 = (abs(ts/normt) > 0.15)
             dev2 = (abs(rs/normp) > 0.15)
-            print(dev1, dev2)
             
             clidata = {"month_precip": section, "temp_outlook": dev1*sign(ts), "precip_outlook": dev2*sign(rs)}
             datagot = True
@@ -758,7 +756,6 @@ def getdata():
             aldata["moon"] = mooninfo
             if wxdata:
                 lat, long = wxdata["current"]["info"]["geocode"]
-                print(lat, long)
                 sr1 = r.get(f"https://api.sunrisesunset.io/json?lat={lat}&lng={long}&time_format=unix").json()["results"]
                 sr2 = r.get(f"https://api.sunrisesunset.io/json?lat={lat}&lng={long}&time_format=unix&date=tomorrow").json()["results"]
                 aldata["sun"] = {
@@ -1199,7 +1196,7 @@ def drawpage_fmt(lines : list, formatting : list):
             drawshadow(smallfont, line, 80+xoff, 109+yy+ldl_y*1.25+yo, 3, mono=gmono, char_offsets={}, color=coll)
             yy += linespacing/2
         elif fmt[0] == 2:
-            drawshadow(largefont32, line, 80+xoff, 109+yy+ldl_y*1.25+yo, 3, mono=gmono, char_offsets={}, color=coll)
+            drawshadow(largefont32, line, 80+xoff, 109+yy+ldl_y*1.25+yo, 3, mono=gmono, char_offsets={}, color=coll, jr_override=jrfonttall)
             yy += linespacing
 
 def drawpage(lines : list, smalltext="", shift=0, vshift=0):
@@ -2353,13 +2350,13 @@ while working:
             else:
                 crawl = crawls[crawlactive]
             nextcrawlready = False
-            crawlscroll += 2
+            crawlscroll += 2*delta*seconds
             if alerting:
                 pg.draw.rect(win, ((187, 17, 0) if (slide not in ["lr", "cr"] or ("warnpalbug" not in old)) else (128, 16, 0)) if True or "ADVISORY" not in crawl else (126, 31, 0), pg.Rect(0, 404-ao-ao//2, screenw, 76+ao+ao//2))
             jrf = jrfontnormal
             if ((slide in ["lr", "cr"]) or (colorbug_started and colorbug_nat)) and ("warnpalbug" in old):
                 jrf = jrfontradaralert
-            drawshadow(starfont32, crawl, screenw-crawlscroll, 403, 3, mono=gmono, char_offsets={}, jr_override=jrf)
+            drawshadow(starfont32, crawl, round(screenw-crawlscroll), 403, 3, mono=gmono, char_offsets={}, jr_override=jrf)
             if not alerting:
                 crawltime -= delta*seconds
             if crawlscroll >= (screenw+(len(crawl)+4)*(gmono if not jr else m.floor(gmono))):
