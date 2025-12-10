@@ -15,6 +15,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__))) #do this or everything expl
 
 #did you know?
 #i know i did
+#probably because i made the thing
 tips = [
     "You can save your configuration to a separate file for later use!",
     "The Extra LDL Message appears at the end of the LDL loop, but before any ad crawls.",
@@ -110,7 +111,7 @@ def do_update(to_c):
         commit = f.read().strip()
     
     if commit == to_c:
-        return False  # Already up-to-date
+        return False  #already up-to-date
     changes = get_changed(commit, to_c)
     
     for change in changes:
@@ -124,7 +125,7 @@ def do_update(to_c):
                 os.remove(filename)
     with open("commit.txt", "w") as f:
         f.write(to_c)
-    return True  # Update successful
+    return True  #success!
 
 def detect():
     if os.path.exists("main.py"):
@@ -141,7 +142,10 @@ def detect():
                 return content
             except:
                 return
+
+unstable = False
 def check_updates(frame):
+    global unstable
     err = False
     tags = None
     commits = None
@@ -159,7 +163,7 @@ def check_updates(frame):
         dl.Destroy()
         return
     
-    # Store tags and commits in frame for menu handlers
+    #store these in the frame because menus
     frame.tags = tags
     frame.commits = commits
     
@@ -181,6 +185,7 @@ def check_updates(frame):
         if commit != tags[0]['name']:
             frame.showmessage(f"A new update is available! ({tags[0]['name']})", wx.ICON_INFORMATION)
     else:
+        unstable = True
         if commit != commits[0]['sha']:
             frame.showmessage(f"A new update is available! ({commits[0]['sha'][:8]})", wx.ICON_INFORMATION)
 
@@ -241,6 +246,7 @@ class Launcher(wx.Frame):
         self.infobar = wx.InfoBar(panel)
         self.infobar.AddButton(wx.ID_OK, "Install")
         self.infobar.AddButton(wx.ID_CLOSE, "Dismiss")
+        self.infobar.Bind(wx.EVT_BUTTON, self.update)
         
         icon05x = wx.Icon("launcher/icon_16x16.png", wx.BITMAP_TYPE_PNG)
         icon1x = wx.Bitmap("launcher/icon_32x32.png", wx.BITMAP_TYPE_PNG)
@@ -1120,6 +1126,13 @@ class Launcher(wx.Frame):
         dyk.Raise() #put this window on top
     def showmessage(self, msg, flags):
         wx.CallAfter(self.infobar.ShowMessage, msg, flags)
+    
+    def update(self, event):
+        if event.GetId() == wx.ID_OK:
+            if unstable:
+                self.on_switch_unstable(None)
+            else:
+                self.on_switch_release(None)
     
     def on_switch_release(self, event):
         if not self.tags:
