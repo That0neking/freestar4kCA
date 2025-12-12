@@ -1237,7 +1237,7 @@ if sockets and sock:
                                 ldlmode = False
                             else:
                                 connsendall(conn, f"no change\n".encode())
-                        elif args[0] == "cueldl":
+                        elif args[0] in ["cueldl", "cuen'tldl", "f"]: #press a smaller f to pay respects to the ldl
                             if not ldlon:
                                 reps = 1
                                 if len(args) > 1:
@@ -1251,7 +1251,7 @@ if sockets and sock:
                                 ldlidx = 0
                             else:
                                 connsendall(conn, f"no change\n".encode())
-                        elif args[0] == "uncue":
+                        elif args[0] in ["uncue", "cuen't", "F"]: #i'm not renaming it to cancel, and press F to pay respects
                             if not ldlmode:
                                 connsendall(conn, f"accepted\n".encode())
                                 ldlmode = True
@@ -2453,7 +2453,7 @@ while working:
                     else:
                         wt = textmerge(wc, f"   {ws}")
                     drawshadow(starfont32, wt, 62+14+txoff+18*20, 96+14+ldl_y+77*i+9, 3, mono=gmono)
-                    drawreg(dficons[i], (640, 96+14+ldl_y+77*i+24), ix=(m.floor(iconidx2) % len(dficons[i])))
+                    drawreg(dficons[i], (640+txoff, 96+14+ldl_y+77*i+24), ix=(m.floor(iconidx2) % len(dficons[i])))
         elif slide == "intro":
             drawshadow(startitlefont, "Welcome!", 181+txoff//3, 39+ldl_y, 3, color=yeller, mono=15.5, ofw=1.07, bs=True, upper=veryuppercase)
 
