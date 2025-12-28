@@ -2197,8 +2197,8 @@ while working:
     
     iconidx += 0.125*delta*seconds
     iconidx %= len(mainicon)
-    iconidx2 += 0.125*delta*seconds
-    iconidx2 %= max(len(ldllficon), max([len(i) for i in dficons]))
+    #iconidx2 += 0.125*delta*seconds
+    #iconidx2 %= max(len(ldllficon), max([len(i) for i in dficons]))
     iconidx3 += 0.125*delta*seconds
     iconidx3 %= 7
     #delta = cl.get_fps()
@@ -2676,7 +2676,7 @@ while working:
                     else:
                         wt = textmerge(wc, f"   {ws}")
                     drawshadow(starfont32, wt, 62+14+txoff+18*20, 96+14+ldl_y+(yoo+77)*i+9, 3, mono=gmono)
-                    drawreg(dficons[j-4], (640+txoff-15, 96+14+ldl_y+(yoo+77)*i+20), ix=(m.floor(iconidx2) % len(dficons[j-4])))
+                    drawreg(dficons[j-4], (640+txoff-15, 96+14+ldl_y+(yoo+77)*i+20), ix=(m.floor(iconidx3) % len(dficons[j-4])))
         elif slide == "intro":
             drawshadow(startitlefont, "Welcome!", 181+txoff//3, 39+ldl_y, 3, color=yeller, mono=15.5, ofw=1.07, bs=True, upper=veryuppercase)
 
@@ -2707,7 +2707,7 @@ while working:
                 xx -= 60
                 yy -= 18
                 if reglocs[idx][3]:
-                    drawreg(reglocs[idx][3], (xx+60, yy+18), (m.floor(iconidx2) % len(reglocs[idx][3])))
+                    drawreg(reglocs[idx][3], (xx+60, yy+18), (m.floor(iconidx3) % len(reglocs[idx][3])))
                 drawshadow(starfont32, name, xx-round(len(name)*15/2)+34, yy-25, 3, mono=15)
                 drawshadow(largefont32, str(temp), xx+25, yy, 3, mono=15, color=yeller, char_offsets=jroffsetstall, jr_override=jrfonttall, variable=jrwidthstall, leftalign=True)
             
@@ -2734,7 +2734,7 @@ while working:
                     drawshadow(largefont32, padtext(str(tcflocs[i][2]["extended"]["daily"][1]["tempMin"]), 3), 540-21, 72*i+120+yy, 3, color=yeller, mono=21)
                     drawshadow(largefont32, padtext(str(tcflocs[i][2]["extended"]["daily"][1]["tempMax"]), 3), 613-21, 72*i+120+yy, 3, color=yeller, mono=21)
                 if tcflocs[i][3]:
-                    drawreg(tcflocs[i][3], (430, 72*i+120+yy+20), (m.floor(iconidx2) % len(tcflocs[i][3])))
+                    drawreg(tcflocs[i][3], (430, 72*i+120+yy+20), (m.floor(iconidx3) % len(tcflocs[i][3])))
             
             pg.draw.rect(win, outer_c, pg.Rect(0, 91, screenw, 20))
             drawshadow(smallfont, "LOW", 479+round((screenw-768)*2/3)+54, 75, 3, color=yeller, mono=gmono, char_offsets={})
@@ -2879,7 +2879,7 @@ while working:
                 fc = (wxdata["extended"]["daypart"][0]["dayOrNight"] == "N")
                 ooo = False
                 xx = 72-ldlextra*18+txoff
-                mm = pg.transform.smoothscale_by(ldllficon[m.floor(iconidx2) % len(ldllficon)][0], (1.2, 1))
+                mm = pg.transform.smoothscale_by(ldllficon[m.floor(iconidx3) % len(ldllficon)][0], (1.2, 1))
                 if fc == 0:
                     drawshadow(starfont32, "Today" , xx, 409, 3, mono=15, color=yeller)
                     drawshadow(starfont32, "'" , xx+72, 409, 3, mono=15, color=yeller)
