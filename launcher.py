@@ -1048,7 +1048,7 @@ class Launcher(wx.Frame):
         pa.SetSizer(pas)
         metric = wx.CheckBox(pa, label="Metric Units")
         borderless = wx.CheckBox(pa, label="No Window Frame")
-        efullscreen = wx.CheckBox(pa, label="Exclusive Fullscreen")
+        efullscreen = wx.CheckBox(pa, label="Fullscreen")
         compress = wx.CheckBox(pa, label="Compress Window")
         compress.SetToolTip(wx.ToolTip("Compresses the window horizontally to match the expected aspect ratio. Normally, it is wider by a factor of 1.2x to match the actual 4000 framebuffer size."))
         pas.Add(metric, 0, wx.ALL, 2)
