@@ -1953,7 +1953,7 @@ def dowrite():
         frame = av.VideoFrame.from_ndarray(sdata, format="rgb24")
         frame = frame.reformat(format="yuv420p")
         frame.pts = frame_idx_actual
-        frame.time_base = frac.Fraction(1, 60)
+        frame.time_base = frac.Fraction(1, framerate)
         for out in outputs:
             framelists[out].append(frame)
         last_p = p_counter * 1
