@@ -411,15 +411,15 @@ def draw_palette_gradient(rect : pg.Rect, colors, fuzzy=0.5):
 
 oldgrad = False
 #theme
-bg_c = [(64, 33, 98),  (80, 39, 88), (98, 47, 75), (117, 55, 62), (134, 62, 51), (153, 70, 38), (168, 77, 28), (184, 83, 17), (209, 94, 0)]
+bg_c = [(4, 31, 25),  (4, 36, 26), (3, 41, 27), (3, 47, 29), (3, 51, 30), (2, 56, 31), (2, 62, 32), (1, 67, 34), (1, 72, 35)]
 #bg_c = [(44, 24, 112), (64, 33, 98), (80, 39, 88), (98, 47, 75), (117, 55, 62), (134, 62, 51), (153, 70, 38), (168, 77, 28), (184, 83, 17)]
 ban_c = [(209, 94, 0), (184, 83, 17), (168, 77, 28), (153, 70, 38), (117, 55, 62), (98, 47, 75), (80, 39, 88), (64, 33, 98)]
 ban_c = list(reversed(bg_c))
-box_c = [(60, 104, 192), (52, 88, 168), (48, 72, 140), (40, 56, 112), (40, 44, 96)]
+box_c = [(72, 112, 96), (57, 98, 84), (45, 87, 74), (31, 74, 62), (16, 60, 50)]
 tcf_c = [(22, 59, 133), (18, 47, 119), (13, 35, 105), (9, 24, 92), (4, 12, 78), (4, 12, 78), (4, 12, 78), (9, 24, 92), (13, 35, 105), (18, 47, 119), (22, 59, 133)]
 tcf_bg = draw_palette_gradient(pg.Rect(0, 0, 768, 72*4), tcf_c)
-ldl_c = (40, 56, 112)
-outer_c = (44, 24, 112)
+ldl_c = (1, 72, 35)
+outer_c = (4, 31, 25)
 
 def get_color_steps(c1, c2, steps):
     stepss = []
@@ -488,16 +488,6 @@ def draw_ldl(top_offset=0, bh_offset=0, all_offset=0):
 
 def draw_banner(top_offset=0, bh_offset=0, all_offset=0):
     pg.draw.rect(win, outer_c, pg.Rect(0, 0-all_offset, screenw, 90))
-    pg.draw.rect(win, ban_c[0], pg.Rect(0, 30-all_offset, screenw, 9))
-    pg.draw.rect(win, ban_c[1], pg.Rect(0, 38-all_offset, screenw, 9))
-    pg.draw.rect(win, ban_c[2], pg.Rect(0, 46-all_offset, screenw, 9))
-    pg.draw.rect(win, ban_c[3], pg.Rect(0, 54-all_offset, screenw, 9))
-    pg.draw.rect(win, ban_c[4], pg.Rect(0, 62-all_offset, screenw, 11))
-    pg.draw.rect(win, ban_c[5], pg.Rect(0, 72-all_offset, screenw, 9))
-    pg.draw.rect(win, ban_c[6], pg.Rect(0, 80-all_offset, screenw, 7))
-    pg.draw.rect(win, ban_c[7], pg.Rect(0, 85-all_offset, screenw, 6))
-    
-    pg.draw.polygon(win, outer_c, [[screenw-148-top_offset, -all_offset], [screenw, -all_offset], [screenw, 90-all_offset], [screenw-238-top_offset,90-all_offset]])
 
 def clear_profile():
     global profiling
